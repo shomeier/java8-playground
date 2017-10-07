@@ -1,0 +1,54 @@
+#
+# all repositories go in here ...
+#
+
+local: \
+        aQute.bnd.deployer.repository.LocalIndexedRepo; \
+            name                =       local ; \
+            pretty              =       true ; \
+            local               =       ${build}/local
+maven: \
+	aQute.bnd.repository.maven.provider.MavenBndRepository; \
+        releaseUrl=https://maven.pd.apollon.de/repository/repo/; \
+        snapshotUrl=https://oss.sonatype.org/content/repositories/osgi/; \
+        index=${build}/index/maven.mvn; \
+        name=maven
+
+central:  \
+	aQute.bnd.repository.maven.pom.provider.BndPomRepository; \
+		snapshotUrls=https://oss.sonatype.org/content/groups/osgi; \
+		releaseUrls=https://repo1.maven.org/maven2/; \
+		pom=${build}/index/central.xml; \
+		name=central; \
+		location=${build}/cache/enroute-central.xml
+
+distro = \
+	aQute.bnd.repository.maven.pom.provider.BndPomRepository; \
+		snapshotUrls=https://oss.sonatype.org/content/groups/osgi; \
+		releaseUrls=https://repo1.maven.org/maven2/; \
+		revision=org.osgi:osgi.enroute.pom.distro:2.1.0-SNAPSHOT; \
+		name=distro; \
+		location=${build}/cache/enroute-distro.xml
+
+release: \
+		aQute.bnd.repository.maven.provider.MavenBndRepository; \
+		releaseUrl=https://maven.pd.apollon.de/repository/libs-release-local/; \
+		snapshotUrl=https://maven.pd.apollon.de/repository/libs-snapshot-local/; \
+		index=${build}/index/release.mvn; \
+		name="release"
+
+# the baseline repository
+baseline: \
+		aQute.bnd.repository.maven.pom.provider.BndPomRepository; \
+		releaseUrl=https://maven.pd.apollon.de/repository/libs-release-local/; \
+		snapshotUrl=https://maven.pd.apollon.de/repository/libs-snapshot-local/; \
+		pom=${build}/index/baseline.xml; \
+		name="baseline"
+
+#	${baseline}
+-plugin: \
+	${local},\
+	${maven},\
+	${central},\
+	${distro},\
+	${release}

@@ -4,15 +4,7 @@
 # This file defines the properties to be used in an enRoute workspace.
 #
 
--runfw: org.eclipse.osgi
-
--plugin.9x.enroute.distro = \
-	aQute.bnd.repository.maven.pom.provider.BndPomRepository; \
-		snapshotUrls=https://oss.sonatype.org/content/groups/osgi; \
-		releaseUrls=https://repo1.maven.org/maven2/; \
-		revision=org.osgi:osgi.enroute.pom.distro:2.1.0-SNAPSHOT; \
-		name=Distro; \
-		location=${build}/cache/enroute-distro.xml
+#-runfw: org.eclipse.osgi
 
 -runblacklist.enroute:	\
 	osgi.identity;filter:='(osgi.identity=osgi.enroute.base.api)', \
@@ -41,9 +33,17 @@
 
 debug-bundles: \
 	osgi.identity;filter:='(osgi.identity=osgi.enroute.webconsole.xray.provider)',\
+	osgi.identity;filter:='(osgi.identity=org.apache.felix.webconsole.plugins.ds)',\
 	osgi.implementation;filter:='(osgi.implementation=osgi.metatype)',\
 	osgi.implementation;filter:='(osgi.implementation=osgi.log)',\
 	osgi.implementation;filter:='(osgi.implementation=osgi.event)',\
 	osgi.identity;filter:='(osgi.identity=org.apache.felix.gogo.command)',\
 	osgi.identity;filter:='(osgi.identity=org.apache.felix.gogo.shell)', \
 	osgi.identity;filter:='(osgi.identity=osgi.enroute.base.debug.provider)'
+
+# see here: https://groups.google.com/forum/#!topic/bndtools-users/9xniAf4KLoE
+-augment.fe_ev: \
+	org.apache.felix.eventadmin; \
+		capability:="  osgi.service;objectClass=org.osgi.service.event.EventAdmin;effective:=active, \
+					   osgi.implementation;osgi.implementation=osgi.event", \
+		requirement:= "osgi.extender;filter:='(osgi.extender=osgi.component)'"

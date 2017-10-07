@@ -1,0 +1,5 @@
+repo.enroute.distro:		distro
+
+bundle.enroute.base.api: 	osgi.enroute.base.api;version=latest;repo=${repo.enroute.distro}
+bundle.junit:				osgi.enroute.junit.wrapper;version=latest;repo=${repo.enroute.distro}
+bundle.hamcrest:				osgi.enroute.hamcrest.wrapper;repo=${repo.enroute.distro}

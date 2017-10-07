@@ -1,3 +1,39 @@
 #
 # This file is left open for you to define your macros
 #
+javac.source: 			1.8
+javac.target: 			1.8
+-runee:					JavaSE-1.8
+
+Service-Component: 		*
+-dsannotations: 			*
+-metatypeannotations:	*
+-contract:				*
+
+test-cases: 				${classes;NAMED;*Test}
+-resolve.effective:		resolve, active
+
+Git-Descriptor:   			${system-allow-fail;git describe --dirty --always}
+Git-SHA:          			${system-allow-fail;git rev-list -1 HEAD}
+
+-resolve.effective: 			active;skip:="osgi.service"
+
+Bundle-Vendor:            	shorty
+copyright:				  	Copyright (c) shorty (2015, ${tstamp;yyyy}) and others. All Rights Reserved.
+Bundle-Copyright:         	${copyright}
+
+-diffignore: 				Git-Descriptor,Git-SHA,Created-By,Tool,Bnd-LastModified,Bundle-Copyright
+
+-removeheaders: 				Include-Resource, Private-Package
+
+# On Jenkins we expect the bnd.settings xml file for proper deployment to maven
+# If the bnd.settings file is not found we use the one in cnf
+# See also: http://bnd.bndtools.org/instructions/connection-settings.html
+bnd.settings:			${user.home}/.m2/bnd-settings.xml
+-connection-settings: 	${if;${isfile;${bnd.settings}};${bnd.settings};${build}/bnd-settings.xml}
+
+# connection-log macro does not work
+# -connection-log: 		${build}/connection.log
+
+#-baselinerepo: baseline
+-releaserepo: release
